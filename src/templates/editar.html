@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 bg-white p-4 rounded shadow-sm">
+        <h3>Editar Leitura #{{ leitura.id }}</h3>
+        <hr>
+        <form action="/leituras/{{ leitura.id }}" method="POST">
+            <div class="mb-3">
+                <label class="form-label">Temperatura (°C)</label>
+                <input type="number" step="0.1" name="temperatura" class="form-control" value="{{ leitura.temperatura }}" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Umidade (%)</label>
+                <input type="number" step="0.1" name="umidade" class="form-control" value="{{ leitura.umidade }}" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Sensação Térmica (°C)</label>
+                <input type="number" step="0.1" name="sensacao" class="form-control" value="{{ leitura.sensacao }}" required>
+            </div>
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-success">Salvar Alterações</button>
+                <a href="/leituras" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,10 +1,9 @@
-CREATE TABLE IF NOT EXISTS leituras ( 
+DROP TABLE IF EXISTS leituras;
+
+CREATE TABLE leituras (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    temperatura REAL NOT NULL, 
+    temperatura REAL NOT NULL,
     umidade REAL NOT NULL,
-    pressao REAL,
-    sensacao_termica REAL,
-    previsao TEXT,
-    timestamp DATETIME DEFAULT (datetime('now','localtime')),
-    unix_timestamp INTEGER
+    sensacao REAL NOT NULL,
+    timestamp DATETIME DEFAULT (datetime('now','localtime'))
 );

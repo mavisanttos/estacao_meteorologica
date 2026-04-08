@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row text-center mb-4">
+    <div class="col">
+        <h1 class="display-5">Painel de Visualização</h1>
+        <button id="btnMedir" class="btn btn-primary btn-lg shadow-sm mt-3">Medir Agora</button>
+        <p id="status" class="mt-2 text-secondary"></p>
+    </div>
+</div>
+
+{% if leituras %}
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm p-4">
+            <canvas id="meuGrafico" 
+                data-labels='[{% for r in leituras|reverse %}"{{ r.timestamp[-8:] }}"{% if not loop.last %},{% endif %}{% endfor %}]'
+                data-temp='[{% for r in leituras|reverse %}{{ r.temperatura }}{% if not loop.last %},{% endif %}{% endfor %}]'
+                data-umid='[{% for r in leituras|reverse %}{{ r.umidade }}{% if not loop.last %},{% endif %}{% endfor %}]'
+                width="400" height="150">
+            </canvas>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-8">
+        <div class="card shadow-sm p-4">
+            <h5 class="mb-3">Últimas Leituras</h5>
+            <table class="table table-striped table-hover text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Horário</th>
+                        <th>Temperatura (°C)</th>
+                        <th>Umidade (%)</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in leituras %}
+                    <tr>
+                        <td>{{ r.timestamp[-8:] }}</td>
+                        <td>{{ "%.1f"|format(r.temperatura) }}</td>
+                        <td>{{ "%.1f"|format(r.umidade) }}</td>
+                        <td>
+                            {# Lógica: Azul < 20 | Verde <= 27 | Vermelho > 27 #}
+                            {% if r.temperatura < 20 %}
+                                <span class="text-primary fw-bold" title="Frio">●</span>
+                            {% elif r.temperatura <= 27 %}
+                                <span class="text-success fw-bold" title="Ideal">●</span>
+                            {% else %}
+                                <span class="text-danger fw-bold" title="Quente">●</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm p-4 border-0 bg-light">
+            <h5 class="mb-3">Legenda de Temperatura</h5>
+            <div class="d-flex flex-column gap-2">
+                <p class="mb-1"><span class="text-primary fw-bold">●</span> Frio (< 20°C)</p>
+                <p class="mb-1"><span class="text-success fw-bold">●</span> Ideal (20°C - 27°C)</p>
+                <p class="mb-1"><span class="text-danger fw-bold">●</span> Quente (> 27°C)</p>
+            </div>
+            <hr>
+            <small class="text-muted text-center">Os dados são atualizados via conexão Serial com o Arduino.</small>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-info text-center shadow-sm">
+    <h4>Nenhum dado encontrado!</h4>
+    <p>Conecte o Arduino e clique no botão <strong>Medir Agora</strong> para iniciar.</p>
+</div>
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}

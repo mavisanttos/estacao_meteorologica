@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Histórico de Leituras</h2>
+</div>
+
+<div class="table-responsive bg-white p-3 rounded shadow-sm">
+    <table class="table table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Data/Hora</th>
+                <th>Temp (°C)</th>
+                <th>Umid (%)</th>
+                <th>Sensação (°C)</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for leitura in leituras %}
+            <tr>
+                <td>{{ leitura.id }}</td>
+                <td>{{ leitura.timestamp }}</td>
+                <td>{{ leitura.temperatura }}</td>
+                <td>{{ leitura.umidade }}</td>
+                <td>{{ leitura.sensacao }}</td>
+                <td>
+                    <a href="/editar/{{ leitura.id }}" class="btn btn-sm btn-outline-primary">Editar</a>
+
+                    <form action="/leituras/deletar/{{ leitura.id }}" method="POST" style="display:inline;">
+                        <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Tem certeza?')">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

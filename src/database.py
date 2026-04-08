@@ -1,39 +1,40 @@
 import sqlite3
-import time
+import os
+
+DB_NAME = 'dados.db'
 
 def get_db_connection():
-    conn = sqlite3.connect('dados.db', timeout=10)
+    conn = sqlite3.connect(DB_NAME, timeout=20)
+    
     conn.execute('PRAGMA journal_mode=WAL')
-    conn.execute('PRAGMA busy_timeout=5000')
+    conn.execute('PRAGMA synchronous=NORMAL')
+    
     conn.row_factory = sqlite3.Row
     return conn
 
 def init_db():
-    conn = get_db_connection()
-    with open('schema.sql', 'r') as f:
-        conn.executescript(f.read())
-    conn.close()
+    with get_db_connection() as conn:
+        with open('schema.sql', mode='r') as f:
+            conn.cursor().executescript(f.read())
+    print("Banco de dados inicializado com sucesso!")
 
-def inserir_leitura(temp, umid, press, sensacao, prev):
+def inserir_leitura(temperatura, umidade, sensacao):
     conn = get_db_connection()
     cursor = conn.cursor()
-    unix_now = int(time.time())
-    
     cursor.execute('''
-        INSERT INTO leituras (temperatura, umidade, pressao, sensacao_termica, previsao, unix_timestamp)
-        VALUES (?, ?, ?, ?, ?, ?)
-    ''', (temp, umid, press, sensacao, prev, unix_now))
-    
-    id_gerado = cursor.lastrowid
+        INSERT INTO leituras (temperatura, umidade, sensacao)
+        VALUES (?, ?, ?)
+    ''', (temperatura, umidade, sensacao))
     conn.commit()
+    novo_id = cursor.lastrowid
     conn.close()
-    return id_gerado
+    return novo_id
 
 def listar_leituras(limite=50):
     conn = get_db_connection()
     leituras = conn.execute('SELECT * FROM leituras ORDER BY timestamp DESC LIMIT ?', (limite,)).fetchall()
     conn.close()
-    return leituras
+    return [dict(ix) for ix in leituras]
 
 def buscar_leitura(id):
     conn = get_db_connection()
@@ -41,27 +42,21 @@ def buscar_leitura(id):
     conn.close()
     return leitura
 
-def atualizar_leitura(id, dados):
+def atualizar_leitura(id, temperatura, umidade, sensacao):
     conn = get_db_connection()
-    cursor = conn.cursor()
-    
-    cursor.execute('''
+    conn.execute('''
         UPDATE leituras 
-        SET temperatura = ?, umidade = ?, pressao = ?, sensacao_termica = ?, previsao = ?
+        SET temperatura = ?, umidade = ?, sensacao = ?
         WHERE id = ?
-    ''', (dados['temperatura'], dados['umidade'], dados.get('pressao'), 
-          dados.get('sensacao_termica'), dados.get('previsao'), id))
-    
-    linhas_alteradas = cursor.rowcount
+    ''', (temperatura, umidade, sensacao, id))
     conn.commit()
     conn.close()
-    return linhas_alteradas > 0
 
 def deletar_leitura(id):
     conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute('DELETE FROM leituras WHERE id = ?', (id,))
-    linhas_deletadas = cursor.rowcount
+    conn.execute('DELETE FROM leituras WHERE id = ?', (id,))
     conn.commit()
     conn.close()
-    return linhas_deletadas > 0
+
+if __name__ == '__main__':
+    init_db()

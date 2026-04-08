@@ -1,10 +1,8 @@
-# 🌦️ Estação Meteorológica IoT - Módulo 5 (Inteli)
+# Estação Meteorológica - Maria Vitória dos Santos
 
-Este projeto é uma solução completa de monitoramento climático que integra hardware de baixo custo (Arduino + DHT11) a uma infraestrutura moderna de software baseada em microserviços e APIs REST. A aplicação permite a coleta, persistência, visualização e edição de dados meteorológicos em tempo real.
+&emsp; Esta documentação reflete o desenvolvimento completo de uma simulação de um monitor climático que integra hardware a uma infraestrutura de software baseada em microserviços e APIs REST. A aplicação permite a coleta, persistência, visualização e edição de dados meteorológicos em tempo real.
 
----
-
-## 🚀 Funcionalidades Principais
+## Funcionalidades Principais
 
 - **Coleta On-Demand (Trigger):**  
   Diferente de sensores passivos, esta estação só realiza leituras quando solicitada pelo Dashboard (Botão "Medir Agora").
@@ -24,9 +22,8 @@ Este projeto é uma solução completa de monitoramento climático que integra h
 - **Exportação de Dados:**  
   Suporte nativo para exportação de leituras em formato JSON via API.
 
----
 
-## 🛠️ Arquitetura e Estrutura de Arquivos
+## Arquitetura e Estrutura de Arquivos
 
 O projeto está dividido em camadas para facilitar a manutenção:
 
@@ -49,14 +46,14 @@ O projeto está dividido em camadas para facilitar a manutenção:
 └── dados.db               # Banco de dados SQLite (com +30 leituras)
 ```
 
-## 📋 Documentação da API (Endpoints)
+## Endpoints
 
-A API responde tanto em HTML (para humanos) quanto em JSON (para sistemas), usando o parâmetro `?formato=json`.
+A API responde tanto em HTML quanto em JSON, usando o parâmetro `?formato=json`.
 
 | Método | Rota                          | Função        | Descrição                                                  |
 |--------|-------------------------------|--------------|------------------------------------------------------------|
 | GET    | /                             | index()      | Painel principal com as últimas 10 leituras e gráfico       |
-| GET    | /leituras                     | listar()     | Histórico completo (aceita `?formato=json`)                 |
+| GET    | /leituras                     | listar()     | Histórico completo                                         |
 | POST   | /leituras                     | criar()      | Recebe dados do Arduino via Serial Reader                  |
 | GET    | /leituras/<id>                | detalhe()    | Exibe/Retorna uma leitura específica por ID                |
 | PUT/POST | /leituras/<id>              | atualizar()  | Atualiza os dados de uma leitura existente                 |
@@ -64,52 +61,64 @@ A API responde tanto em HTML (para humanos) quanto em JSON (para sistemas), usan
 | GET    | /api/estatisticas             | estatisticas() | Retorna Média, Máxima e Mínima em JSON                  |
 | POST   | /medir                        | solicitar()  | Envia o sinal de trigger para o Arduino                    |
 
----
-
-## 🎨 Descrição do Front-end
+## Front-end
 
 A interface foi construída utilizando **Bootstrap 5**, focando em responsividade e clareza visual.
 
-### 🏠 Dashboard (Index)
+### Dashboard (Index)
 - Indicador de Status: Notificações em tempo real sobre o sucesso ou erro das medições  
 - Gráfico Temporal: Linhas suaves que mostram a variação climática recente  
 
-**Status Colorido (Conforto térmico):**
-- 🔵 Azul (Frio): < 20°C  
-- 🟢 Verde (Ideal): 20°C - 27°C  
-- 🔴 Vermelho (Quente): > 27°C  
+**Status de Conforto térmico:**
+- Azul (Frio): < 20°C  
+- Verde (Ideal): 20°C - 27°C  
+- Vermelho (Quente): > 27°C  
 
----
+*obs: essas cores também podem ser visualizadas no LED RGD do hardware*
 
-### 📊 Histórico
+### Histórico
 - Tabela administrativa completa  
 - Formatação de data/hora local  
 - Exclusão de registros  
 
----
-
-### ✏️ Edição
+### Edição
 - Formulário intuitivo  
 - Validação de campos  
 - Correção de dados manuais  
 
----
-
-## ⚙️ Instruções de Instalação e Execução
+##  Instruções de Instalação e Execução
 
 ### 1. Requisitos
 - Python 3.x instalado  
 - Arduino com sensor DHT11 e LED RGB  
   - Pins: R=9, G=10, B=11  
 
----
-
 ### 2. Instalação
 
 Clone o repositório e instale as dependências:
 
 ```bash
-pip install flask pyserial requests
+git clone https://github.com/mavisanttos/estacao_meteorologica.git
+code .
+cd src
+```
+
+Crie e ative uma venv:
+
+```bash
+# para windows:
+python -m venv venv
+venv\Scripts\activate
+
+# para mac/linux:
+python3 -m venv venv
+source venv/bin/activate
+```
+
+Instale as dependências:
+
+```bash
+pip install -r requirements.txt
 ```
 
 ### 3. Configuração
@@ -136,7 +145,7 @@ Acesse no navegador: [http://127.0.0.1:5000](http://127.0.0.1:5000)
 
 ---
 
-## 🔧 Boas Práticas Implementadas
+## Boas Práticas Implementadas
 
 - **Modo WAL no SQLite:** Permite leitura e escrita simultânea sem travamentos  
 - **Tratamento de Erros:** Detecta automaticamente desconexão do Arduino  
@@ -145,6 +154,6 @@ Acesse no navegador: [http://127.0.0.1:5000](http://127.0.0.1:5000)
 
 ---
 
-## 🎥 Demonstração em Vídeo
+## Demonstração em Vídeo
 
-*(Insira aqui o link para o seu vídeo de demonstração — YouTube ou Drive)*  
+&emsp; Veja o funcionamento do projeto: [Vídeo]()  

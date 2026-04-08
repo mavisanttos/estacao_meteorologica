@@ -126,7 +126,7 @@ pip install -r requirements.txt
 Edite o arquivo `config.py` para definir a porta correta:
 
 ```python
-SERIAL_PORT = 'COM12'  # Exemplo
+SERIAL_PORT = 'COM12'  # define a porta de conexão com o hardware
 ```
 
 ### 4. Execução (dois terminais)

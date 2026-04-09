@@ -156,4 +156,4 @@ Acesse no navegador: [http://127.0.0.1:5000](http://127.0.0.1:5000)
 
 ## Demonstração em Vídeo
 
-&emsp; Veja o funcionamento do projeto: [Vídeo]()  
+&emsp; Veja o funcionamento do projeto: [Vídeo](https://youtu.be/7MT9QdJhaPM?si=UrSc3_Hn-TMFJ8U4)  

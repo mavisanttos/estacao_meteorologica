@@ -35,7 +35,7 @@ void loop() {
         Serial.print(",\"sensacao\":"); Serial.print(sensacao);
         Serial.println("}");
 
-        // cor dos leds baseada na temperatira
+        // cor dos leds baseada na temperatura
         if (temp < 20.0) setLED(0, 0, 255); // azul
         else if (temp <= 27.0) setLED(0, 255, 0); // verde
         else setLED(255, 0, 0); // vermelho

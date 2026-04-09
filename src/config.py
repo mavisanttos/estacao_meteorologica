@@ -1,5 +1,6 @@
 SERIAL_PORT = 'COM12'
 BAUD_RATE = 9600
 API_URL = 'http://127.0.0.1:5000/leituras'
+COMANDO_FILE = 'comando.txt'
 DATABASE_NAME = 'dados.db'
 DEBUG_MODE = True

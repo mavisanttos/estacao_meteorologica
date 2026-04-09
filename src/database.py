@@ -1,7 +1,8 @@
 import sqlite3
 import os
+from config import DATABASE_NAME
 
-DB_NAME = 'dados.db'
+DB_NAME = DATABASE_NAME
 
 def get_db_connection():
     conn = sqlite3.connect(DB_NAME, timeout=20)

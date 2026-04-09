@@ -36,8 +36,8 @@ void loop() {
         Serial.println("}");
 
         // cor dos leds baseada na temperatira
-        if (sensacao < 20.0) setLED(0, 0, 255); // azul
-        else if (sensacao <= 27.0) setLED(0, 255, 0); // verde
+        if (temp < 20.0) setLED(0, 0, 255); // azul
+        else if (temp <= 27.0) setLED(0, 255, 0); // verde
         else setLED(255, 0, 0); // vermelho
       }
     }
